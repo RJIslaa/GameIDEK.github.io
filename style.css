@@ -1,6 +1,15 @@
-.cover-container {
+..cover-container {
   max-width: 100em;
   background-color: #FFB7C5;
+}
+
+header {
+  background-color: #000;
+}
+
+header .nav-link,
+header .nav-link.active {
+  color: #fff !important;
 }
 
 .btn-green {
