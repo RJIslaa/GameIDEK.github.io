@@ -3,6 +3,10 @@
   background-color: #FFB7C5;
 }
 
+header {
+  background-color: #000;
+}
+
 .nav.nav-masthead {
   background-color: #000;
 }
