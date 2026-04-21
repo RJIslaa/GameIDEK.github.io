@@ -1,6 +1,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+const emilyImg = new Image();
+emilyImg.src = "https://i.pinimg.com/736x/98/ff/a9/98ffa9f7eabd3fe3a2f0c5706638774a.jpg";
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -55,25 +58,19 @@ function shootEnemy(event) {
 }
 function updateEnemies() {
   enemies.forEach(enemy => {
-    // Move toward Emily (center)
+
     const dx = emily.x - enemy.x;
     const dy = emily.y - enemy.y;
     const distance = Math.hypot(dx, dy);
 
-    // Normalize direction and move
-    enemy.x += (dx / distance) * enemy.speed;
-    enemy.y += (dy / distance) * enemy.speed;
+    if (distance > 0) {
+      enemy.x += (dx / distance) * enemy.speed;
+      enemy.y += (dy / distance) * enemy.speed;
+    }
 
-    // 💥 COLLISION WITH EMILY
     const dist = Math.hypot(enemy.x - emily.x, enemy.y - emily.y);
 
     if (dist < enemy.size + emily.size) {
-      health--;
-      enemy.y = canvas.height + 100; // remove enemy
-    }
-
-    // Optional: still damage if they reach bottom
-    if (enemy.y > canvas.height) {
       health--;
       enemy.y = canvas.height + 100;
     }
@@ -118,12 +115,13 @@ function gameLoop() {
   drawEnemies();     // enemies
   drawUI();          // score + health
 
-  // ⭐ draw Emily LAST or middle
-  ctx.fillStyle = "pink";
-  ctx.beginPath();
-  ctx.arc(emily.x, emily.y, emily.size, 0, Math.PI * 2);
-  ctx.fill();
-
+ctx.drawImage(
+  emilyImg,
+  emily.x - emily.size,
+  emily.y - emily.size,
+  emily.size * 2,
+  emily.size * 2
+);
   if (gameOver) {
     drawGameOver();
   } else {
