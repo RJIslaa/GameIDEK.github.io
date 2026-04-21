@@ -1,6 +1,13 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// ⭐ Emily position (CENTER OF CANVAS)
+const emily = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  size: 40
+};
+
 let enemies = [];
 let score = 0;
 let health = 3;
@@ -43,15 +50,22 @@ function shootEnemy(event) {
     return true;
   });
 }
-
 function updateEnemies() {
   enemies.forEach(enemy => {
     enemy.y += enemy.speed;
 
-    // If enemy reaches bottom → lose health
+    // 💥 COLLISION WITH EMILY
+    const dist = Math.hypot(enemy.x - emily.x, enemy.y - emily.y);
+
+    if (dist < enemy.size + emily.size) {
+      health--;
+      enemy.y = canvas.height + 100; // remove enemy
+    }
+
+    // Optional: still damage if they reach bottom
     if (enemy.y > canvas.height) {
       health--;
-      enemy.y = canvas.height + 100; // remove it
+      enemy.y = canvas.height + 100;
     }
   });
 
@@ -74,6 +88,7 @@ function drawEnemies() {
 function drawUI() {
   ctx.fillStyle = "white";
   ctx.font = "20px Arial";
+
   ctx.fillText("Score: " + score, 10, 30);
   ctx.fillText("Health: " + health, 10, 60);
 }
@@ -86,13 +101,18 @@ function drawGameOver() {
   ctx.font = "20px Arial";
   ctx.fillText("Click to Play Again", canvas.width / 2 - 100, canvas.height / 2 + 40);
 }
-
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  updateEnemies();
-  drawEnemies();
-  drawUI();
+  updateEnemies();   // movement + collision
+  drawEnemies();     // enemies
+  drawUI();          // score + health
+
+  // ⭐ draw Emily LAST or middle
+  ctx.fillStyle = "pink";
+  ctx.beginPath();
+  ctx.arc(emily.x, emily.y, emily.size, 0, Math.PI * 2);
+  ctx.fill();
 
   if (gameOver) {
     drawGameOver();
@@ -100,7 +120,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
   }
 }
-
 // Restart game on click after game over
 canvas.addEventListener("click", function () {
   if (gameOver) {
