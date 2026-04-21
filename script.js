@@ -1,6 +1,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 // ⭐ Emily position (CENTER OF CANVAS)
 const emily = {
   x: canvas.width / 2,
@@ -120,6 +123,16 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
   }
 }
+
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  emily.x = canvas.width / 2;
+  emily.y = canvas.height / 2;
+});
+
 // Restart game on click after game over
 canvas.addEventListener("click", function () {
   if (gameOver) {
