@@ -55,7 +55,14 @@ function shootEnemy(event) {
 }
 function updateEnemies() {
   enemies.forEach(enemy => {
-    enemy.y += enemy.speed;
+    // Move toward Emily (center)
+    const dx = emily.x - enemy.x;
+    const dy = emily.y - enemy.y;
+    const distance = Math.hypot(dx, dy);
+
+    // Normalize direction and move
+    enemy.x += (dx / distance) * enemy.speed;
+    enemy.y += (dy / distance) * enemy.speed;
 
     // 💥 COLLISION WITH EMILY
     const dist = Math.hypot(enemy.x - emily.x, enemy.y - emily.y);
