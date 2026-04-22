@@ -7,7 +7,7 @@ emilyImg.src = "https://i.pinimg.com/736x/98/ff/a9/98ffa9f7eabd3fe3a2f0c57066387
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// ⭐ Emily position (CENTER OF CANVAS)
+// Emily position (Center of the screen)
 const emily = {
   x: canvas.width / 2,
   y: canvas.height / 2,
